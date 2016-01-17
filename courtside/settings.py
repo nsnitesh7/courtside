@@ -1,5 +1,7 @@
 # Django settings for courtside project.
 import os
+import djcelery
+djcelery.setup_loader()
 
 import dj_database_url
 
@@ -8,11 +10,27 @@ if os.environ.get('PRODUCTION') == 'True':
 else:
     DEBUG = True
 
+DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
+SOUTH_MIGRATION_MODULES = {
+    'djcelery': 'djcelery.south_migrations',
+}
+
 ADMINS = (
-    ('Mahdi Yusuf', 'yusuf.mahdi@gmail.com'),
+    ('Mahdi Yusuf', 'nsnitesh7@gmail.com'),
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'nsnitesh7@gmail.com'
+SERVER_EMAIL = 'nsnitesh7@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'nsnitesh7@gmail.com'
+EMAIL_HOST_PASSWORD = ''
 
 MANAGERS = ADMINS
 
@@ -143,6 +161,7 @@ INSTALLED_APPS = (
     'south',
     'rest_framework',
     'gunicorn',
+    'djcelery',
 )
 
 # A sample logging configuration. The only tangible logging

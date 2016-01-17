@@ -201,6 +201,16 @@ def new_register(request):
             player.sports = sports
             user = authenticate(username=player.user, password=password1)
             login(request, user)
+            EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+            from django.core.mail import EmailMessage
+            from django.template.loader import render_to_string
+            from django.utils.html import strip_tags
+            subject, from_email, to = 'Welcome', 'nsnitesh7@gmail.com', user.email
+            html_content = render_to_string('email_signup.html', {'user': user.first_name})
+            text_content = strip_tags(html_content)
+            msg = EmailMessage(subject, text_content, to=[to])
+            msg.send()
             # task here to email user
             SignUpTask.delay(user)
             return HttpResponseRedirect('/')
